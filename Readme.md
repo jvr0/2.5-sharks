@@ -1,5 +1,7 @@
 # w2pandas
 
+![Diagrama](https://github.com/jvr0/2.5-sharks/blob/main/img/diagrama.png)
+
 ## 1_general_cleaning
 ### Inicio de la limpieza
 Lo primero, por seguridad, realizamos una copia del df para poder realizar cambios sin preocuparnos de la versión original de los datos.
