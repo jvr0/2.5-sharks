@@ -2,6 +2,10 @@
 
 ![Diagrama](https://github.com/jvr0/2.5-sharks/blob/main/img/diagrama.png)
 
+<details>
+<summary>Limpieza general</summary>
+<br>
+
 ## 1_general_cleaning
 ### Inicio de la limpieza
 Lo primero, por seguridad, realizamos una copia del df para poder realizar cambios sin preocuparnos de la versión original de los datos.
@@ -18,6 +22,11 @@ A continuación se procederá a abordar el data frame columna por columna, revis
 Tras revisar las variables de las columnas empezamos la limpieza por las dos últimas columnas. Vemos que los únicos datos que ofrecen estas columnas son: [nan, 'Teramo', 'stopped here', 'change filename']. Revisaremos las veces que se repiten los datos para comprobar su utilidad, aunque a primera vista parecen columnas inservibles.
 
 Vemos que los datos únicamente aparecen una vez cada uno en los 6.000 registros. Por tanto decidimos dropear las columnas.
+</details>
+
+<details>
+<summary>Limpieza fechas</summary>
+<br>
 
 ## 2_date_cleaning
 ### Limpieza de fecha
@@ -31,6 +40,11 @@ A continuación aplicamos nuevas funciones personalizadas para obtener el año, 
 En este momento contamos con nueve nuevas columnas en las que hemos presentado los datos obtenidos del df. Revisamos los datos creados y corregimos de forma manual 3 registros. Eliminamos otros 16 registros debido a la incapacidad de presentar una fecha fiable.
 
 A continuación cruzamos las columnas creadas para unificar la fecha. Aplicamos unas serie de funciones que comparan ["Year", "Y_casen1", "Y_casen2"] y lo mismo con el mes y el año. En estas funciones buscamos similitudes entre los registros obtenidos para mantener el dato más fiable en las columnas ["Final_year", "Final_month", "Final_day"]. Finalmente exportamos el df para reunificarlo con los datos limpiados en el primer checkpoint.
+</details>
+
+<details>
+<summary>Limpieza índice y tipos</summary>
+<br>
 
 ## 3_index_type_cleaning
 reunificamos el proyecto importando los datos 1_shark_limpio y 2_shark_fechas. Concatenamos y eliminamos las columnas sobrantes. Además, ahora que la columna "Case number" ya no tiene sentido la vamos a reconvertir en el índice para los ataques. Sin embargo antes vamos a eliminar filas que tras la exploración no se hayan podido corregir
@@ -43,6 +57,11 @@ Buscamos unificar los valores mal escritos o que significan lo mismo y ocuparnos
 Tras una primera corrección revisamos las dos filas categorizadas como questionable. Se decide eliminar dichas filas debido a su falta de interés para la base de datos. No se puede confirmar la presencia de un tiburon en el ataque y no se presentan mayores daños que desperfectos en una tabla de surf.
 
 Observamos que en la columna solamente hay 4 valores nulos. Sin embargo se decide eliminar las filas debido a la presencia de nulos en otras columnas clave como "Species".
+</details>
+
+<details>
+<summary>Limpieza geografía</summary>
+<br>
 
 ## 4_geography
 
@@ -53,6 +72,11 @@ Vemos que varias filas que tienen nulos en su categoría Country también tienen
 Aplicamos una función utilizando las librerias pycountry y difflib para unificar las categorias de ["Country", "Area", Location"]. Vemos que la función tiene gran éxito corrigiendo las columnas Area y Location, unificando casi 150 y 330 categorias, respectivamente.
 
 A continuación veremos los nulos de estas columnas. Vemos que hay demasiados registros cómo para analizarlos a mano. Trataremos de arreglar la columna Area a través de la localización. A continuación revisamos las columnas donde "Area" sea null y "Location" contenga un elemento. La longitud continua siendo demasiado grande como para poder determinar el Area a través del Location. Por tanto decidimos asignar el valor "Unknown" a los elementos nulos.
+</details>
+
+<details>
+<summary>Limpieza persona</summary>
+<br>
 
 ## 5_person
 ### Limpieza columna "Activity"
@@ -88,13 +112,23 @@ A continuación limpiamos los valores incongruentes de la columna Deadly categor
 ### Limpieza columna "href"
 
 Para la limpieza de las columnas "href" y "href formula" hemos comprobado que únicamente existe un valor nulo en la columna "href formula". También se ha comprobado que aunque aparentemente parezcan contener la misma información existen 60 registros donde estas columnas son diferentes. Debido a la inexistencia de nulos en la columna "href" se decide confiar en esta y eliminar "href formula", ya que no tendría sentido tener dos columnas quee tuvieran la misma información.
+</details>
+
+<details>
+<summary>Reorganización</summary>
+<br>
 
 ## 6_reorganization
 
 Aprovechamos este checkpoint del tratamiento del data frame para reorganizar las columnas y sus nombres. Tras este proceso contamos con el siguiente data frame:
 ["Case Number", "Year", "Month", "Day", "Season", "Time", "Daytime", "Country", "Area", "Location", "Type", "Activity", "Injury", "Deadly", "Species", "Size", "Name", "Sex", "Age", "Source", "pdf", "href", "original order"]
+</details>
 
-## 7_time
+<details>
+<summary>Limpieza tiempo</summary>
+<br>
+
+### 7_time
 ### Limpieza columna "Time"
 
 Para la limpieza de la columna ["Time"], la cual representa el momento del ataque, creamos varias funciones que simplifican los datos y los restringen a las posibles 24 horas del día. Utilizamos el formato 24 horas, dando un valor único e integro a cada hora del día. Además, para mayor simplificación decidimos que si el ataque sucedió antes o exactamente a la media hora se introducirá el número exacto, si sucedio despues se declarará que fue en la hora siguiente. 
@@ -113,6 +147,11 @@ else: return "Night"
 ### Creación columna "Season"
 
 Para la creación de la columna ["Season"] utilizamos los datos obtenidos en la exploración de la fecha para establecer la estación en la que se produjo el ataque. 
+</details>
+
+<details>
+<summary>Limpieza especies</summary>
+<br>
 
 ## 8_Species
 ### Limpieza columna "Species"
@@ -128,6 +167,11 @@ Además se ha decidido no tratar los valores NaN de la columna Size debido a que
 ### Limpieza columna "Source"
 
 Para la limpieza de la columna Source se ha decidido rellenar los valores nulos con la categoría "Unknown". Además, buscando legibilidad, y teniendo en cuenta que se trata de nombres, siglas e iniciales se ha decidido poner la primera letra de cada palabra en mayuscula.
+</details>
+
+<details>
+<summary>Conclusiones</summary>
+<br>
 
 ## 9_final
 
@@ -140,3 +184,12 @@ En la descripción general de los se detecta que el año máximo es 2176. A cont
 Mientras se solucionaba el problema se detecto que únicamente había un año por encima de los valores posibles. Se decide cambiarlo a mano, encontrando el año del ataque en la columna "pdf".
 
 Finalmente, y tras las últimas comprobaciones, declaramos la base de datos como limpia. Se ha eliminado la presencia de valores nulos, excepto los intencionadamente colocados en la columna Size y no se detectan más valores atípicos en la visualización.
+</details>
+
+
+
+
+
+
+
+
